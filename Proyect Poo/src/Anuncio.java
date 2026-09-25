@@ -1,8 +1,12 @@
 public class Anuncio {
+    import java.io.Serializable;
+
+    public class Anuncio implements Serializable {
+        private static final long serialVersionUID = 1L;
     
-    private String titulo;
-    private String mensaje;
-    private String fecha;
+        private String titulo;
+        private String mensaje;
+        private String fecha;
 
     public Anuncio(String titulo, String mensaje, String fecha) {
         this.titulo = titulo;
@@ -43,4 +47,7 @@ public class Anuncio {
                 '}';
     }
 
+}    
+
+    
 }
