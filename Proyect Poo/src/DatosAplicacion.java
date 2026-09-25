@@ -1,11 +1,39 @@
+import java.io.*;
 import java.util.ArrayList;
 
-/** Objetos compartidos por las vistas y controladores durante la ejecución. */
-public class DatosAplicacion {
+
+public class DatosAplicacion implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private static final String ARCHIVO = "datos_aplicacion.dat";
+
     private final ArrayList<Club> clubes = new ArrayList<>();
     private final ArrayList<Usuario> usuarios = new ArrayList<>();
     public ArrayList<Club> getClubes() { return clubes; }
     public ArrayList<Usuario> getUsuarios() { return usuarios; }
+
+    public void guardar() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(ARCHIVO))) {
+            out.writeObject(this);
+        } catch (IOException e) {
+            System.err.println("No se pudo guardar la persistencia: " + e.getMessage());
+        }
+    }
+
+    public static DatosAplicacion cargar() {
+        File archivo = new File(ARCHIVO);
+        if (!archivo.exists()) {
+            return crearDemostracion();
+        }
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(archivo))) {
+            Object objeto = in.readObject();
+            if (objeto instanceof DatosAplicacion) {
+                return (DatosAplicacion) objeto;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("No se pudo cargar la persistencia; se usará la demo: " + e.getMessage());
+        }
+        return crearDemostracion();
+    }
 
     public static DatosAplicacion crearDemostracion() {
         DatosAplicacion datos = new DatosAplicacion();
