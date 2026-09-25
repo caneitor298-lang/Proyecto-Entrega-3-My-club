@@ -1,5 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
-public class Estudiante extends Usuario{
+public class Estudiante extends Usuario implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String carrera;
     private ArrayList<Club> clubes;
