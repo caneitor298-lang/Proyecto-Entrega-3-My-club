@@ -47,8 +47,3 @@ public class Anuncio implements Serializable {
     }
 
 }
-
-}    
-
-    
-}
