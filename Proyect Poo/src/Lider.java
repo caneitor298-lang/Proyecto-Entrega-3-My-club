@@ -1,4 +1,7 @@
-public class Lider extends Usuario{
+import java.io.Serializable;
+
+public class Lider extends Usuario implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private Club clubAdministrado;
 
