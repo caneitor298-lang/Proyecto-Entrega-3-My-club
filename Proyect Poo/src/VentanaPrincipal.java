@@ -1,10 +1,11 @@
 import java.awt.*;
 import javax.swing.*;
+ 
 
-/** Una sola ventana; CardLayout cambia el contenido sin abrir ventanas nuevas. */
 public class VentanaPrincipal extends JFrame {
     private final UsuarioController usuarios;
     private final ClubController clubes;
+    private final DatosAplicacion datos;
     private final CardLayout tarjetas = new CardLayout();
     private final JPanel contenido = new JPanel(tarjetas);
     private final JPanel menu = new JPanel(new BorderLayout(8, 8));
@@ -12,10 +13,11 @@ public class VentanaPrincipal extends JFrame {
     private InicioView inicio;
     private JPanel detalle;
     private JPanel misClubes;
-
-    public VentanaPrincipal(UsuarioController usuarios, ClubController clubes) {
+ 
+    public VentanaPrincipal(UsuarioController usuarios, ClubController clubes, DatosAplicacion datos) {
         this.usuarios = usuarios;
         this.clubes = clubes;
+        this.datos = datos;
         setTitle("My Club");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(940, 680);
@@ -33,8 +35,14 @@ public class VentanaPrincipal extends JFrame {
         menu.removeAll();
         menu.setVisible(false);
         contenido.removeAll();
-        contenido.add(new LoginView(usuarios, this::abrirSesion), "login");
+        contenido.add(new LoginView(usuarios, this::abrirSesion, this::mostrarRegistro), "login");
         tarjetas.show(contenido, "login");
+        contenido.revalidate();
+        contenido.repaint();
+    }
+    public void mostrarRegistro() {
+        contenido.add(new RegistroView(usuarios, this::abrirSesion, this::mostrarLogin), "registro");
+        tarjetas.show(contenido, "registro");
         contenido.revalidate();
         contenido.repaint();
     }
@@ -97,3 +105,4 @@ public class VentanaPrincipal extends JFrame {
         JOptionPane.showMessageDialog(padre, mensaje, "Revisa la operación", JOptionPane.ERROR_MESSAGE);
     }
 }
+ 
