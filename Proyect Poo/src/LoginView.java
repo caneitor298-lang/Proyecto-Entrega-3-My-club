@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 import javax.swing.*;
 
 public class LoginView extends JPanel {
-    public LoginView(UsuarioController controlador, Consumer<Usuario> alIngresar) {
+    public LoginView(UsuarioController controlador, Consumer<Usuario> alIngresar, Runnable irARegistro) {
         setLayout(new GridBagLayout());
         setBackground(Estilos.FONDO);
         JPanel formulario = new JPanel(new GridLayout(0, 1, 8, 10));
@@ -26,9 +26,10 @@ public class LoginView extends JPanel {
         JButton ingresar = new JButton("Iniciar sesión");
         Estilos.estilizarBoton(ingresar);
         formulario.add(ingresar);
+        JButton registrar = new JButton("Crear cuenta");
+        formulario.add(registrar);
         JLabel estado = new JLabel(" ");
         formulario.add(estado);
-        formulario.add(new JLabel("Al cerrar el programa se pierden los cambios."));
         ingresar.addActionListener(e -> {
             char[] clave = contrasena.getPassword();
             if (correo.getText().trim().isEmpty() || clave.length == 0) {
@@ -42,6 +43,7 @@ public class LoginView extends JPanel {
             if (usuario == null) estado.setText("Correo o contraseña incorrectos.");
             else alIngresar.accept(usuario);
         });
+        registrar.addActionListener(e -> irARegistro.run());
         contrasena.addActionListener(e -> ingresar.doClick());
         add(formulario);
     }
